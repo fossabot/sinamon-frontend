@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import BlankLine from '../../utils/BlankLine';
 import Input from '../../atomics/Form/Input';
 import Label from '../../atomics/Form/Label';
 import Radio from '../../atomics/Form/Radio';
 import SCREEN_SIZE from '../../styles/screen-size';
+import Select from '../../atomics/Form/Select';
 
 const RadioList = styled.div`
   & input[type='radio'] {
@@ -31,6 +32,7 @@ interface RegisterState {
   readonly password: string;
   readonly passwordConfirm: string;
   readonly fullName: string;
+  readonly department: number;
   readonly grade: number;
   readonly class: number;
   readonly number: number;
@@ -43,7 +45,10 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({ state }) => {
   const [input, setInput] = state;
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: keyof RegisterState) => {
+  const onInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    type: keyof RegisterState
+  ) => {
     e.persist();
 
     setInput((current) => ({
@@ -56,7 +61,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ state }) => {
     <GridContainer>
       <div>
         <Label>이메일</Label>
-        <Input type="email" value={input.email} onChange={(e) => onInputChange(e, 'email')} />
+        <Input
+          type="email"
+          value={input.email}
+          onChange={(e) => onInputChange(e, 'email')}
+          placeholder="로그인 시 사용할 이메일을 입력해주세요."
+        />
         <BlankLine gap={20} />
 
         <Label>비밀번호</Label>
@@ -64,6 +74,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ state }) => {
           type="password"
           value={input.password}
           onChange={(e) => onInputChange(e, 'password')}
+          placeholder="6자리 이상의 비밀번호를 입력해주세요."
         />
         <BlankLine gap={20} />
 
@@ -72,15 +83,33 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ state }) => {
           type="password"
           value={input.passwordConfirm}
           onChange={(e) => onInputChange(e, 'passwordConfirm')}
+          placeholder="비밀번호를 한번 더 입력해주세요."
         />
         <BlankLine gap={20} />
 
         <Label>실명</Label>
-        <Input type="text" value={input.fullName} onChange={(e) => onInputChange(e, 'fullName')} />
+        <Input
+          type="text"
+          value={input.fullName}
+          onChange={(e) => onInputChange(e, 'fullName')}
+          placeholder="실명을 입력해주세요."
+        />
         <BlankLine gap={20} />
       </div>
+
       <div>
-        <Label>학년 (선생님 가입 시 담당 학년을 선택합니다)</Label>
+        <Label>학과</Label>
+        <Select value={input.department} onChange={(e) => onInputChange(e, 'department')}>
+          <option value="0">자신의 학과를 선택해주세요.</option>
+          <option value="1">컴퓨터전자과</option>
+          <option value="2">스마트자동학과</option>
+          <option value="3">IT산업디자인과</option>
+          <option value="4">IT경영정보과</option>
+          <option value="5">IT소프트웨어과</option>
+        </Select>
+        <BlankLine gap={20} />
+
+        <Label>학년</Label>
         <RadioList>
           <Radio
             type="radio"

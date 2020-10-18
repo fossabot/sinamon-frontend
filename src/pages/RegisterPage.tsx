@@ -31,7 +31,7 @@ const ButtonWrapper = styled.div`
   flex-direction: column;
 
   & > button {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -40,6 +40,7 @@ interface RegisterState {
   readonly password: string;
   readonly passwordConfirm: string;
   readonly fullName: string;
+  readonly department: number;
   readonly grade: number;
   readonly class: number;
   readonly number: number;
@@ -56,6 +57,7 @@ const RegisterPage: React.FC = () => {
     password: '',
     passwordConfirm: '',
     fullName: '',
+    department: 0,
     grade: 0,
     class: 0,
     number: 1
@@ -70,7 +72,8 @@ const RegisterPage: React.FC = () => {
   const validator = (): boolean => {
     const blankCount = Object.values(state[0]).filter(
       (inputValue) =>
-        inputValue === 0 || (typeof inputValue === 'string' && inputValue.trim() === '')
+        inputValue === 0 ||
+        (typeof inputValue === 'string' && (inputValue.trim() === '' || inputValue === '0'))
     );
     if (blankCount.length > 0) {
       showToast('❗ 빈칸이 있습니다.', 'danger');
@@ -113,6 +116,7 @@ const RegisterPage: React.FC = () => {
       email: state[0].email,
       password: state[0].password,
       name: state[0].fullName,
+      department: state[0].department,
       studentGrade: state[0].grade,
       studentClass: state[0].class,
       studentNumber: state[0].number

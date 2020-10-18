@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import CheckBox from '../../atomics/Form/CheckBox';
 
-const UnderLine = styled.span`
+const UnderLineLink = styled(Link)`
   text-decoration: underline;
+  color: #333333;
   cursor: pointer;
   transition: color 0.2s ease-in;
 
@@ -36,8 +40,15 @@ const RegisterFooterText: React.FC<RegisterFooterTextProps> = ({ check }) => {
   return (
     <>
       <span>
-        <UnderLine>개인정보처리방침</UnderLine> 동의 (필수){' '}
+        <UnderLineLink to="/privacy" target="_blank">
+          <FontAwesomeIcon icon={faExternalLinkAlt} />
+          개인정보처리방침
+        </UnderLineLink>{' '}
+        동의 (필수)
         <CheckBox
+          style={{
+            marginLeft: 5
+          }}
           type="checkbox"
           checked={input.privacy}
           onChange={(e) => onInputChange(e, 'privacy')}
@@ -45,8 +56,19 @@ const RegisterFooterText: React.FC<RegisterFooterTextProps> = ({ check }) => {
       </span>
       <br />
       <span>
-        <UnderLine>수정과 이용약관</UnderLine> 동의 (필수){' '}
-        <CheckBox type="checkbox" checked={input.tos} onChange={(e) => onInputChange(e, 'tos')} />
+        <UnderLineLink to="/tos" target="_blank">
+          <FontAwesomeIcon icon={faExternalLinkAlt} />
+          수정과 이용약관
+        </UnderLineLink>{' '}
+        동의 (필수)
+        <CheckBox
+          style={{
+            marginLeft: 5
+          }}
+          type="checkbox"
+          checked={input.tos}
+          onChange={(e) => onInputChange(e, 'tos')}
+        />
       </span>
     </>
   );

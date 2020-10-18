@@ -8,6 +8,7 @@ import {
   faSignOutAlt,
   faUmbrella
 } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 import MainSideBarItem from './MainSideBarItem';
 import SCREEN_SIZE from '../../styles/screen-size';
 import MainTitleBar from '../MainTitleBar';
@@ -36,7 +37,30 @@ const ItemList = styled.ul<{ isOpen: boolean }>`
   }
 `;
 
+const StyledFooterText = styled.p`
+  text-align: center;
+
+  margin: 2rem 0;
+`;
+
+const PrivacyButton = styled.button`
+  border: none;
+  background-color: transparent;
+
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--color-subtext);
+
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: var(--color-button-hover);
+  }
+`;
+
 const MainSideBar: React.FC = () => {
+  const history = useHistory();
   const [isOpen, setOpen] = useState<boolean>(false);
 
   const onLogoutClick = async () => {
@@ -45,6 +69,14 @@ const MainSideBar: React.FC = () => {
     await Api.delete('/auth/logout');
     showToast('👋 다음에 또 찾아와주세요!', 'success');
     window.location.reload();
+  };
+
+  const onPrivacyClick = () => {
+    history.push('/privacy');
+  };
+
+  const onToSClick = () => {
+    history.push('/tos');
   };
 
   return (
@@ -77,6 +109,11 @@ const MainSideBar: React.FC = () => {
           &nbsp;
           <p>로그아웃</p>
         </MainSideBarItem>
+
+        <StyledFooterText>
+          <PrivacyButton onClick={onPrivacyClick}>개인정보처리방침</PrivacyButton> &middot;{' '}
+          <PrivacyButton onClick={onToSClick}>이용약관</PrivacyButton>
+        </StyledFooterText>
       </ItemList>
     </Sidebar>
   );
