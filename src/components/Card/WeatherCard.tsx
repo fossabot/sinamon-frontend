@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCloud,
-  faCloudMoon,
-  faCloudMoonRain,
-  faCloudShowersHeavy,
-  faCloudSun,
-  faMoon,
-  faSnowflake,
-  faSun,
-  faUmbrella,
-  faSmog
-} from '@fortawesome/free-solid-svg-icons';
+import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import BlankLine from '../../utils/BlankLine';
 import { MediumButton } from '../../atomics/Button';
 import Card from '../../components/Card';
 import CardTitle from '../../atomics/Typography/CardTitle';
 import Api from '../../api';
 import convertWeatherStatusToString from '../../utils/Converter/Weather';
+import { convertPm10ToString, convertPm25ToString } from '../../utils/Converter/Dust';
+import WeatherIcon from '../../atomics/Icon/WeatherIcon';
 
 const Container = styled.div`
   display: grid;
@@ -46,41 +37,25 @@ const StyledDustContent = styled.b<{ color: string }>`
   color: ${(props) => props.color};
 `;
 
+interface DustPayload {
+  readonly pm25: number;
+  readonly pm10: number;
+}
+
 const WeatherCard: React.FC = () => {
   const [weather, setWeather] = useState<string>('');
+  const [dust, setDust] = useState<DustPayload>({
+    pm25: 0,
+    pm10: 0
+  });
 
   useEffect(() => {
     Api.get('/weather').then((res) => setWeather(res.data.data));
+    Api.get('/weather/dust').then((res) => setDust(res.data.data));
   }, []);
 
-  const WeatherIcon = () => {
-    const hours = new Date().getHours();
-    const isNight = hours >= 20 && hours <= 6;
-
-    if (weather === 'CLEAR') {
-      if (isNight) {
-        return <FontAwesomeIcon icon={faMoon} size="5x" />;
-      }
-      return <FontAwesomeIcon icon={faSun} size="5x" />;
-    }
-    if (weather === 'RAIN') {
-      if (isNight) {
-        return <FontAwesomeIcon icon={faCloudMoonRain} size="5x" />;
-      }
-      return <FontAwesomeIcon icon={faCloudShowersHeavy} size="5x" />;
-    }
-    if (weather === 'CLOUDS') {
-      if (isNight) {
-        return <FontAwesomeIcon icon={faCloudMoon} size="5x" />;
-      }
-      return <FontAwesomeIcon icon={faCloud} size="5x" />;
-    }
-    if (weather === 'SNOW') return <FontAwesomeIcon icon={faSnowflake} size="5x" />;
-    if (weather === 'HAZE' || weather === 'MIST') {
-      return <FontAwesomeIcon icon={faSmog} size="5x" />;
-    }
-    return <FontAwesomeIcon icon={faCloudSun} size="5x" />;
-  };
+  const [pm10Text, pm10Color] = convertPm10ToString(dust.pm10);
+  const [pm25Text, pm25Color] = convertPm25ToString(dust.pm25);
 
   return (
     <Card columnStart={1} columnEnd={3} rowStart={1} rowEnd={2}>
@@ -88,7 +63,7 @@ const WeatherCard: React.FC = () => {
       <Container>
         <ContentBody>
           <div>
-            <WeatherIcon />
+            <WeatherIcon weather={weather} />
             <BlankLine gap={10} />
             <StyledWeatherStatus>{convertWeatherStatusToString(weather)}</StyledWeatherStatus>
           </div>
@@ -96,10 +71,11 @@ const WeatherCard: React.FC = () => {
         <ContentBody>
           <div>
             <StyledDustStatus>
-              미세먼지 <StyledDustContent color="var(--color-good)">좋음</StyledDustContent>
+              미세먼지 <StyledDustContent color={`var(${pm10Color})`}>{pm10Text}</StyledDustContent>
             </StyledDustStatus>
             <StyledDustStatus>
-              초미세먼지 <StyledDustContent color="var(--color-bad)">나쁨</StyledDustContent>
+              초미세먼지{' '}
+              <StyledDustContent color={`var(${pm25Color})`}>{pm25Text}</StyledDustContent>
             </StyledDustStatus>
 
             <BlankLine gap={20} />
