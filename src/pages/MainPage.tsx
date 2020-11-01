@@ -10,6 +10,7 @@ import MealCard from '../components/Card/MealCard';
 import CalendarCard from '../components/Card/CalenderCard';
 import useWindowSize from '../hooks/useWindowSize';
 import MainSideBarContainer from '../components/MainSideBar/MainSideBarContainer';
+import NoticeCard from '../components/Card/NoticeCard';
 
 const StyledContent = styled.div`
   margin: 3rem;
@@ -55,16 +56,18 @@ const MainPage: React.FC = () => {
           <MealCard />
 
           <Card columnStart={1} columnEnd={5} rowStart={2} rowEnd={3}>
-            <CardTitle>무엇을 배울까?</CardTitle>
+            <CardTitle>
+              <span role="img" aria-label="clock">
+                ⏱
+              </span>
+              무엇을 배울까?
+            </CardTitle>
             <p>[시간표]</p>
           </Card>
 
           <QRCodeCard hidden={width <= tabletSize} />
 
-          <Card columnStart={1} columnEnd={4} rowStart={3} rowEnd={4}>
-            <CardTitle>알려드려요!</CardTitle>
-            <p>[공지사항]</p>
-          </Card>
+          <NoticeCard />
 
           <CalendarCard />
         </StyledContentGrid>
