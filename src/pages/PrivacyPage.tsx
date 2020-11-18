@@ -119,9 +119,14 @@ const PrivacyPage: React.FC = () => {
           있습니다.
         </p>
         <p>
-          ▶ 개인정보 보호책임자 <br />
-          이름: <br />
-          연락처:
+          ▶ 개인정보보호책임자 <br />
+          책임자: 교장 여승기<br />
+          연락처: 031-218-4100
+        </p>
+        <p>
+          ▶ 개인정보보호담당자 <br />
+          담당자: 김동환<br />
+          연락처: 031-218-4051
         </p>
       </div>
       <BlankLine gap={10} />
@@ -154,7 +159,7 @@ const PrivacyPage: React.FC = () => {
       <BlankLine gap={10} />
       <div>
         <Heading2>10. 부칙</Heading2>
-        <p>- 시행 날짜:</p>
+        <p>- 시행 날짜: 2020년 11월 23일</p>
       </div>
     </Container>
   );
