@@ -1,6 +1,11 @@
-# 🍹 수정과
-
-![sinamon](./docs/main.png)
+<div align="center">
+    <br/>
+    <br/>
+    <img src="https://github.com/swjb-sinamon/sinamon-frontend/blob/develop/docs/logo.png?raw=true" alt="sinamon" />
+    <h3>🍹 수정과</h3>
+    <br/>
+    <br/>
+</div>
 
 > 수원정보과학고등학교 인트라넷 프로젝트
 
